@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Danh Sách Trang Web Của Tôi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 30px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      max-width: 400px;
+      margin: 0 auto 30px auto;
+    }
+
+    li {
+      margin: 1px 0;
+      background-color: #fff;
+      border: 1px solid #007eff;
+      border-radius: 10px;
+      padding: 12px;
+      transition: background 0.3s;
+    }
+
+    li:hover {
+      background-color: #eafaf1;
+    }
+
+    a {
+      text-decoration: none;
+      color: #6b0059;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <h2>Danh Sách 12 Trang Web Của Tôi</h2>
+  <button onclick="openAllLinks()">Mở Tất Cả Trang</button>
+  <ul>
+    <li><a href="https://062062.com" target="_blank">1. https://062062.com</a></li>
+    <li><a href="https://653333.com" target="_blank">2. https://653333.com</a></li>
+    <li><a href="https://007001.com" target="_blank">3. https://007001.com</a></li>
+    <li><a href="https://799788.com" target="_blank">4. https://799788.com</a></li>
+    <li><a href="https://663456.com" target="_blank">5. https://663456.com</a></li>
+    <li><a href="https://766166.com" target="_blank">6. https://766166.com</a></li>
+    <li><a href="https://143143.com" target="_blank">7. https://143143.com</a></li>
+    <li><a href="https://38259.com" target="_blank">8. https://38259.com</a></li>
+    <li><a href="https://668118.com" target="_blank">9. https://668118.com</a></li>
+    <li><a href="https://474488.com" target="_blank">10. https://474488.com</a></li>
+    <li><a href="https://129123.com" target="_blank">11. https://129123.com</a></li>
+    <li><a href="https://36267.com" target="_blank">12. https://36267.com</a></li>
+  </ul>
+  <script>
+    function openAllLinks() {
+      const links = [
+        "https://062062.com",
+        "https://653333.com",
+        "https://007001.com",
+        "https://799788.com",
+        "https://663456.com",
+        "https://766166.com",
+        "https://143143.com",
+        "https://38259.com",
+        "https://668118.com",
+        "https://474488.com",
+        "https://129123.com",
+        "https://36267.com"
+      ];
+
+      links.forEach(link => {
+        window.open(link, "_blank");
+      });
+    }
+  </script>
+</body>
+</html>
