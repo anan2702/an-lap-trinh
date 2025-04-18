@@ -104,16 +104,22 @@
     </style>
 </head>
 
+
+
 <body>
     <nav>
+        <h2>📝 Bài học</h2>
         <div class="section">
-            <h2>📚 Hộp của tôi</h2>
-            <ul id="boxList">
-                <li onclick="selectBox('HTML')">HTML</li>
-                <li onclick="selectBox('JavaScript')">JavaScript</li>
-            </ul>
+            <h2>📝 Bài học</h2>
+            <input type="text" id="searchInput" placeholder="🔍 Tìm bài học..."
+                style="margin-bottom:10px; padding:6px; width:100%; border-radius:4px; border:none;">
+            <ul id="noteTitles"></ul>
+            <button id="addNoteBtn" onclick="addNote()">➕ Thêm ghi chú mới</button>
         </div>
+
         <div class="section">
+            <input type="text" id="searchInput" placeholder="🔍 Tìm bài học..."
+                style="margin-bottom:10px; padding:6px; width:100%; border-radius:4px; border:none;">
             <h2>📝 Bài học</h2>
             <ul id="noteTitles"></ul>
             <button id="addNoteBtn" onclick="addNote()">➕ Thêm ghi chú mới</button>
@@ -196,6 +202,16 @@
             const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
             document.getElementById('saveStatus').innerText = 'Đã lưu lúc ' + timeStr;
         });
+
+        document.getElementById("searchInput").addEventListener("input", function () {
+            const searchText = this.value.toLowerCase();
+            const listItems = document.querySelectorAll("#noteTitles li");
+            listItems.forEach(li => {
+                const text = li.innerText.toLowerCase();
+                li.style.display = text.includes(searchText) ? "" : "none";
+            });
+        });
+
     </script>
 </body>
 
