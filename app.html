@@ -28,6 +28,7 @@
 
         nav .section {
             margin-bottom: 20px;
+            /* KHÔNG thêm overflow: hidden ở đây */
         }
 
         nav ul {
@@ -92,6 +93,13 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+        }
+
+        #noteTitles {
+            max-height: 300px;
+            /* Chiều cao tối đa, bạn có thể chỉnh lớn hơn nếu thích */
+            overflow-y: auto;
+            /* Bật cuộn dọc */
         }
     </style>
 </head>
