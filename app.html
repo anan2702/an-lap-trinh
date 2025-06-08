@@ -1,246 +1,276 @@
 <!DOCTYPE html>
 <html lang="vi">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>后台 học tập - Lưu trữ tài liệu</title>
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+    <!-- Quill core -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+    <!-- Image-resize module style (adds blue border when chọn ảnh) -->
+    <link href="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.css" rel="stylesheet" />
+
     <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            display: flex;
-            height: 100vh;
-        }
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        display: flex;
+        height: 100vh;
+      }
+      nav {
+        width: 250px;
+        background-color: #2b7cff;
+        color: #fff;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+      }
+      nav h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      nav .section {
+        margin-bottom: 20px;
+      }
+      nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      nav ul li {
+        margin: 5px 0;
+        cursor: pointer;
+        padding: 5px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+      }
+      nav ul li:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      nav ul li.active {
+        background-color: rgba(255, 255, 255, 0.4);
+        font-weight: bold;
+      }
 
-        nav {
-            width: 250px;
-            background-color: #2b7cff;
-            color: white;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-        }
+      main {
+        flex: 1;
+        padding: 20px;
+        background: #f4f4f4;
+        overflow-y: auto;
+      }
 
-        nav h2 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-        nav .section {
-            margin-bottom: 20px;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        nav ul li {
-            margin: 5px 0;
-            cursor: pointer;
-            padding: 5px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-
-        nav ul li:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        nav ul li.active {
-            background-color: rgba(255, 255, 255, 0.4);
-            font-weight: bold;
-        }
-
-        main {
-            flex: 1;
-            padding: 20px;
-            background: #f4f4f4;
-            overflow-y: auto;
-        }
-
-        .box {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .note-detail input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        #editor {
-            min-height: 300px;
-            resize: vertical;
-            overflow: auto;
-            padding: 10px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        #editor img {
-            max-width: 100%;
-            height: auto;
-            cursor: pointer;
-        }
-
-        #addNoteBtn,
-        #manualSaveBtn {
-            background-color: #2b7cff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        #addNoteBtn {
-            margin-top: 15px;
-            padding: 8px 12px;
-        }
-
-        #manualSaveBtn {
-            margin-top: 10px;
-            padding: 6px 10px;
-        }
-
-        #noteTitles {
-            max-height: 300px;
-            overflow-y: auto;
-        }
+      .box {
+        background: #fff;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+      .note-detail input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+      #editor {
+        min-height: 300px;
+        overflow: auto;
+        padding: 10px;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      #editor img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+      }
+      #addNoteBtn,
+      #manualSaveBtn {
+        background-color: #2b7cff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      #addNoteBtn {
+        margin-top: 15px;
+        padding: 8px 12px;
+      }
+      #manualSaveBtn {
+        margin-top: 10px;
+        padding: 6px 10px;
+      }
+      #noteTitles {
+        max-height: 300px;
+        overflow-y: auto;
+      }
     </style>
-</head>
-
-<body>
+  </head>
+  <body>
     <nav>
-        <div class="section">
-            <input type="text" id="searchInput" placeholder="🔍 Tìm bài học..."
-                style="margin-bottom:10px; padding:6px; width:100%; border-radius:4px; border:none;">
-            <h2>📚 Hộp của tôi</h2>
-            <ul id="boxList">
-                <li onclick="selectBox('HTML')">HTML</li>
-                <li onclick="selectBox('JavaScript')">JavaScript</li>
-                <li onclick="selectBox('Excel')">Excel</li>
-                <li onclick="selectBox('ceo')">ceo</li>
-            </ul>
-        </div>
-        <div class="section">
-            <h2>📝 Bài học</h2>
-            <ul id="noteTitles"></ul>
-            <button id="addNoteBtn" onclick="addNote()">➕ Thêm ghi chú mới</button>
-        </div>
+      <div class="section">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="🔍 Tìm bài học..."
+          style="margin-bottom: 10px; padding: 6px; width: 100%; border-radius: 4px; border: none"
+        />
+        <h2>📚 Hộp của tôi</h2>
+        <ul id="boxList">
+          <li onclick="selectBox('HTML')">HTML</li>
+          <li onclick="selectBox('JavaScript')">JavaScript</li>
+          <li onclick="selectBox('Excel')">Excel</li>
+          <li onclick="selectBox('ceo')">ceo</li>
+        </ul>
+      </div>
+      <div class="section">
+        <h2>📝 Bài học</h2>
+        <ul id="noteTitles"></ul>
+        <button id="addNoteBtn" onclick="addNote()">➕ Thêm ghi chú mới</button>
+      </div>
     </nav>
+
     <main>
-        <div class="box">
-            <div class="note-detail">
-                <input type="text" id="noteTitleInput" placeholder="Tiêu đề bài học" />
-                <div id="editor" contenteditable="true"></div>
-            </div>
-            <button id="manualSaveBtn">📅 Lưu thủ công</button>
-            <small id="saveStatus" style="margin-left:10px;color:green;"></small>
+      <div class="box">
+        <div class="note-detail">
+          <input type="text" id="noteTitleInput" placeholder="Tiêu đề bài học" />
+          <!-- Quill sẽ tự gắn contenteditable -->
+          <div id="editor"></div>
         </div>
+        <button id="manualSaveBtn">📅 Lưu thủ công</button>
+        <small id="saveStatus" style="margin-left: 10px; color: green"></small>
+      </div>
     </main>
 
+    <!-- Quill core JS -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <!-- Image-related modules (kéo-thả, resize, upload) -->
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-drop-module@1.0.3/dist/image-drop.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-uploader@1.2.3/dist/quill.imageUploader.min.js"></script>
+
     <script>
-        let currentBox = 'HTML';
-        let currentNoteIndex = null;
+      // Đăng ký module vào Quill
+      Quill.register('modules/imageDrop', window.ImageDrop);
+      Quill.register('modules/imageResize', window.ImageResize);
+      Quill.register('modules/imageUploader', window.ImageUploader);
 
-        const quill = new Quill('#editor', {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    [{ header: [1, 2, false] }],
-                    ['bold', 'italic', 'underline'],
-                    ['image', 'code-block']
-                ]
-            }
+      let currentBox = 'HTML';
+      let currentNoteIndex = null;
+
+      const quill = new Quill('#editor', {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            [{ header: [1, 2, false] }],
+            ['bold', 'italic', 'underline'],
+            ['image', 'code-block'],
+          ],
+          // Cho phép kéo-thả ảnh
+          imageDrop: true,
+          // Cho phép resize ảnh bằng tay nắm
+          imageResize: {
+            modules: ['Resize', 'DisplaySize'],
+          },
+          // Cho phép chọn file ảnh; ở đây mình dùng base64 thử nghiệm
+          imageUploader: {
+            upload: (file) => {
+              return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = (error) => reject(error);
+                reader.readAsDataURL(file);
+              });
+            },
+          },
+        },
+      });
+
+      // ---------- Hệ thống ghi chú ----------
+      function selectBox(boxName) {
+        currentBox = boxName;
+        currentNoteIndex = null;
+        document.querySelectorAll('#boxList li').forEach((li) => li.classList.remove('active'));
+        const selectedLi = Array.from(document.querySelectorAll('#boxList li')).find(
+          (li) => li.textContent === boxName,
+        );
+        if (selectedLi) selectedLi.classList.add('active');
+        // Nếu hộp chưa tồn tại → tạo demo note
+        if (!localStorage.getItem(currentBox)) {
+          const demoNote = [
+            {
+              title: `Ghi chú đầu tiên - ${boxName}`,
+              content: `Đây là nội dung mẫu cho ${boxName}.`,
+            },
+          ];
+          localStorage.setItem(currentBox, JSON.stringify(demoNote));
+        }
+        renderNoteTitles();
+        clearNoteEditor();
+      }
+
+      function renderNoteTitles() {
+        const list = document.getElementById('noteTitles');
+        list.innerHTML = '';
+        const notes = JSON.parse(localStorage.getItem(currentBox)) || [];
+        notes.forEach((note, index) => {
+          const li = document.createElement('li');
+          li.innerText = note.title || 'Không có tiêu đề';
+          li.onclick = () => loadNote(index);
+          list.appendChild(li);
         });
+      }
 
-        function selectBox(boxName) {
-            currentBox = boxName;
-            currentNoteIndex = null;
-            document.querySelectorAll('#boxList li').forEach(li => li.classList.remove('active'));
-            const selectedLi = Array.from(document.querySelectorAll('#boxList li')).find(li => li.textContent === boxName);
-            if (selectedLi) selectedLi.classList.add('active');
-            if (!localStorage.getItem(currentBox)) {
-                const demoNote = [{ title: `Ghi chú đầu tiên - ${boxName}`, content: `Đây là nội dung mẫu cho ${boxName}.` }];
-                localStorage.setItem(currentBox, JSON.stringify(demoNote));
-            }
-            renderNoteTitles();
-            clearNoteEditor();
-        }
+      function loadNote(index) {
+        const notes = JSON.parse(localStorage.getItem(currentBox)) || [];
+        const note = notes[index];
+        currentNoteIndex = index;
+        document.getElementById('noteTitleInput').value = note.title;
+        quill.root.innerHTML = note.content;
+      }
 
-        function renderNoteTitles() {
-            const list = document.getElementById('noteTitles');
-            list.innerHTML = '';
-            const notes = JSON.parse(localStorage.getItem(currentBox)) || [];
-            notes.forEach((note, index) => {
-                const li = document.createElement('li');
-                li.innerText = note.title || 'Không có tiêu đề';
-                li.onclick = () => loadNote(index);
-                list.appendChild(li);
-            });
-        }
+      function addNote() {
+        const notes = JSON.parse(localStorage.getItem(currentBox)) || [];
+        const newNote = { title: 'Bài học mới', content: '' };
+        notes.push(newNote);
+        localStorage.setItem(currentBox, JSON.stringify(notes));
+        renderNoteTitles();
+      }
 
-        function loadNote(index) {
-            const notes = JSON.parse(localStorage.getItem(currentBox)) || [];
-            const note = notes[index];
-            currentNoteIndex = index;
-            document.getElementById('noteTitleInput').value = note.title;
-            quill.root.innerHTML = note.content;
-        }
+      function saveCurrentNote() {
+        if (currentNoteIndex === null) return;
+        const notes = JSON.parse(localStorage.getItem(currentBox)) || [];
+        notes[currentNoteIndex].title = document.getElementById('noteTitleInput').value;
+        notes[currentNoteIndex].content = quill.root.innerHTML;
+        localStorage.setItem(currentBox, JSON.stringify(notes));
+        renderNoteTitles();
+      }
 
-        function addNote() {
-            const notes = JSON.parse(localStorage.getItem(currentBox)) || [];
-            const newNote = { title: 'Bài học mới', content: '' };
-            notes.push(newNote);
-            localStorage.setItem(currentBox, JSON.stringify(notes));
-            renderNoteTitles();
-        }
+      function clearNoteEditor() {
+        document.getElementById('noteTitleInput').value = '';
+        quill.root.innerHTML = '';
+      }
 
-        function saveCurrentNote() {
-            if (currentNoteIndex === null) return;
-            const notes = JSON.parse(localStorage.getItem(currentBox)) || [];
-            notes[currentNoteIndex].title = document.getElementById('noteTitleInput').value;
-            notes[currentNoteIndex].content = quill.root.innerHTML;
-            localStorage.setItem(currentBox, JSON.stringify(notes));
-            renderNoteTitles();
-        }
+      window.onload = function () {
+        selectBox(currentBox);
+        document.getElementById('noteTitleInput').addEventListener('input', saveCurrentNote);
+        quill.on('text-change', saveCurrentNote);
+      };
 
-        function clearNoteEditor() {
-            document.getElementById('noteTitleInput').value = '';
-            quill.root.innerHTML = '';
-        }
+      document.getElementById('manualSaveBtn').addEventListener('click', function () {
+        saveCurrentNote();
+        const now = new Date();
+        const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+        document.getElementById('saveStatus').innerText = 'Đã lưu lúc ' + timeStr;
+      });
 
-        window.onload = function () {
-            selectBox(currentBox);
-            document.getElementById('noteTitleInput').addEventListener('input', saveCurrentNote);
-            quill.on('text-change', saveCurrentNote);
-        };
-
-        document.getElementById('manualSaveBtn').addEventListener('click', function () {
-            saveCurrentNote();
-            const now = new Date();
-            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-            document.getElementById('saveStatus').innerText = 'Đã lưu lúc ' + timeStr;
+      document.getElementById('searchInput').addEventListener('input', function () {
+        const searchText = this.value.toLowerCase();
+        const listItems = document.querySelectorAll('#noteTitles li');
+        listItems.forEach((li) => {
+          const text = li.innerText.toLowerCase();
+          li.style.display = text.includes(searchText) ? '' : 'none';
         });
-
-        document.getElementById("searchInput").addEventListener("input", function () {
-            const searchText = this.value.toLowerCase();
-            const listItems = document.querySelectorAll("#noteTitles li");
-            listItems.forEach(li => {
-                const text = li.innerText.toLowerCase();
-                li.style.display = text.includes(searchText) ? "" : "none";
-            });
-        });
+      });
     </script>
-</body>
-
+  </body>
 </html>
