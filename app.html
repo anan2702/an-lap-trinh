@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>后台 học tập - Lưu trữ tài liệu</title>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
         body {
             font-family: sans-serif;
@@ -74,12 +75,24 @@
             font-weight: bold;
         }
 
-        .note-detail textarea {
-            width: 100%;
-            height: 300px;
+        #editor {
+            min-height: 300px;
+            resize: vertical;
+            overflow: auto;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
-        #addNoteBtn, #manualSaveBtn {
+        #editor img {
+            max-width: 100%;
+            height: auto;
+            cursor: pointer;
+        }
+
+        #addNoteBtn,
+        #manualSaveBtn {
             background-color: #2b7cff;
             color: white;
             border: none;
@@ -127,33 +140,39 @@
         <div class="box">
             <div class="note-detail">
                 <input type="text" id="noteTitleInput" placeholder="Tiêu đề bài học" />
-                <textarea id="noteContentInput" placeholder="Nội dung bài học..."></textarea>
+                <div id="editor" contenteditable="true"></div>
             </div>
             <button id="manualSaveBtn">📅 Lưu thủ công</button>
             <small id="saveStatus" style="margin-left:10px;color:green;"></small>
         </div>
     </main>
 
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
         let currentBox = 'HTML';
         let currentNoteIndex = null;
 
+        const quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['image', 'code-block']
+                ]
+            }
+        });
+
         function selectBox(boxName) {
             currentBox = boxName;
             currentNoteIndex = null;
-
-            // Highlight mục đang chọn
             document.querySelectorAll('#boxList li').forEach(li => li.classList.remove('active'));
-            const selectedLi = Array.from(document.querySelectorAll('#boxList li'))
-                .find(li => li.textContent === boxName);
+            const selectedLi = Array.from(document.querySelectorAll('#boxList li')).find(li => li.textContent === boxName);
             if (selectedLi) selectedLi.classList.add('active');
-
-            // Tạo ghi chú mẫu nếu chưa có
             if (!localStorage.getItem(currentBox)) {
                 const demoNote = [{ title: `Ghi chú đầu tiên - ${boxName}`, content: `Đây là nội dung mẫu cho ${boxName}.` }];
                 localStorage.setItem(currentBox, JSON.stringify(demoNote));
             }
-
             renderNoteTitles();
             clearNoteEditor();
         }
@@ -175,7 +194,7 @@
             const note = notes[index];
             currentNoteIndex = index;
             document.getElementById('noteTitleInput').value = note.title;
-            document.getElementById('noteContentInput').value = note.content;
+            quill.root.innerHTML = note.content;
         }
 
         function addNote() {
@@ -190,20 +209,20 @@
             if (currentNoteIndex === null) return;
             const notes = JSON.parse(localStorage.getItem(currentBox)) || [];
             notes[currentNoteIndex].title = document.getElementById('noteTitleInput').value;
-            notes[currentNoteIndex].content = document.getElementById('noteContentInput').value;
+            notes[currentNoteIndex].content = quill.root.innerHTML;
             localStorage.setItem(currentBox, JSON.stringify(notes));
             renderNoteTitles();
         }
 
         function clearNoteEditor() {
             document.getElementById('noteTitleInput').value = '';
-            document.getElementById('noteContentInput').value = '';
+            quill.root.innerHTML = '';
         }
 
         window.onload = function () {
             selectBox(currentBox);
             document.getElementById('noteTitleInput').addEventListener('input', saveCurrentNote);
-            document.getElementById('noteContentInput').addEventListener('input', saveCurrentNote);
+            quill.on('text-change', saveCurrentNote);
         };
 
         document.getElementById('manualSaveBtn').addEventListener('click', function () {
