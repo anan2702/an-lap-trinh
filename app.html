@@ -76,8 +76,19 @@
         }
 
         #editor {
-            height: 300px;
+            min-height: 300px;
+            resize: vertical;
+            overflow: auto;
+            padding: 10px;
             background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #editor img {
+            max-width: 100%;
+            height: auto;
+            cursor: pointer;
         }
 
         #addNoteBtn,
@@ -120,7 +131,7 @@
             </ul>
         </div>
         <div class="section">
-            <h2>🗘 Bài học</h2>
+            <h2>📝 Bài học</h2>
             <ul id="noteTitles"></ul>
             <button id="addNoteBtn" onclick="addNote()">➕ Thêm ghi chú mới</button>
         </div>
@@ -129,9 +140,9 @@
         <div class="box">
             <div class="note-detail">
                 <input type="text" id="noteTitleInput" placeholder="Tiêu đề bài học" />
-                <div id="editor"></div>
+                <div id="editor" contenteditable="true"></div>
             </div>
-            <button id="manualSaveBtn">🗕 Lưu thủ công</button>
+            <button id="manualSaveBtn">📅 Lưu thủ công</button>
             <small id="saveStatus" style="margin-left:10px;color:green;"></small>
         </div>
     </main>
