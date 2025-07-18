@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Truy cập Aizhan nhanh</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 40px;
+      text-align: center;
+    }
+    textarea {
+      padding: 10px;
+      font-size: 16px;
+      width: 400px;
+      height: 200px;
+      resize: vertical;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Nhập danh sách tên miền để kiểm tra trên Aizhan</h1>
+  <p>Nhập mỗi tên miền trên một dòng (vd: qvfib.cn):</p>
+  <textarea id="domainList" placeholder="vd:\ndmhxwl.com\n653333.com\n..."></textarea><br>
+  <button onclick="openMultipleTabs()">Mở tất cả tab</button>
+
+  <script>
+    function openMultipleTabs() {
+      const input = document.getElementById("domainList").value.trim();
+      if (input === '') {
+        alert("Vui lòng nhập ít nhất một tên miền");
+        return;
+      }
+      const domains = input.split(/\n|,/).map(d => d.trim()).filter(d => d !== '');
+      domains.forEach(domain => {
+        const url = `https://www.aizhan.com/cha/${domain}/`;
+        window.open(url, '_blank');
+      });
+    }
+  </script>
+</body>
+</html>
