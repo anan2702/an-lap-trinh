@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Kiểm tra domain trùng</title>
+</head>
+<body>
+  <h2>Nhập danh sách domain (mỗi dòng 1 cái):</h2>
+  <textarea id="input" rows="20" cols="60" placeholder="vd:\ndomain1.com\ndomain2.cn\ndomain1.com"></textarea>
+  <br><br>
+  <button onclick="checkDuplicate()">Kiểm tra trùng lặp</button>
+  <h3>Kết quả:</h3>
+  <pre id="output" style="background:#eee;padding:10px;"></pre>
+
+  <script>
+    function checkDuplicate() {
+      const input = document.getElementById('input').value;
+      const domains = input.split('\n').map(e => e.trim()).filter(e => e);
+      const count = {};
+      const duplicates = [];
+
+      for (let domain of domains) {
+        count[domain] = (count[domain] || 0) + 1;
+        if (count[domain] === 2) {
+          duplicates.push(domain);
+        }
+      }
+
+      const output = duplicates.length > 0
+        ? "⚠️ Domain bị trùng:\n" + duplicates.join("\n")
+        : "✅ Không có domain nào bị trùng!";
+      document.getElementById('output').innerText = output;
+    }
+  </script>
+</body>
+</html>
