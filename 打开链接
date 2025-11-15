@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Mở Nhiều Liên Kết</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #e6f0ff, #ffffff);
+        }
+
+        .container {
+            max-width: 550px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        h2 {
+            text-align: center;
+            color: #0b3d91;
+            font-weight: bold;
+            margin-top: 0;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            font-size: 16px;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid #aac8ff;
+            outline: none;
+            resize: none;
+            transition: 0.2s;
+        }
+
+        textarea:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 8px rgba(74,144,226,0.4);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background: linear-gradient(90deg, #4a90e2, #0066cc);
+            color: white;
+            margin-top: 15px;
+            box-shadow: 0 5px 18px rgba(0,102,204,0.35);
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #3b7fd0, #005bbb);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>🔗 Mở Nhiều Liên Kết</h2>
+
+        <textarea id="linksArea" placeholder="Nhập mỗi dòng 1 liên kết..."></textarea>
+
+        <button onclick="openLinks()">Mở tất cả liên kết</button>
+    </div>
+
+    <script>
+        function openLinks() {
+            const input = document.getElementById("linksArea").value.trim();
+            if (input === "") {
+                alert("Bạn chưa nhập liên kết!");
+                return;
+            }
+
+            const links = input.split("\n");
+
+            links.forEach(link => {
+                let url = link.trim();
+                if (!url) return;
+
+                if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                    url = "https://" + url;
+                }
+
+                window.open(url, "_blank");
+            });
+        }
+    </script>
+
+</body>
+</html>
