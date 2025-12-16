@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Copy từng dòng</title>
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f5f5;
+    padding:20px;
+}
+.box{
+    background:#fff;
+    border-radius:14px;
+    padding:16px;
+    max-width:900px;
+    margin:auto;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+h2{margin:0 0 12px}
+.row{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+    align-items:center;
+}
+input{
+    flex:1;
+    padding:10px 12px;
+    font-size:16px;
+    border:2px solid #00aaff;
+    border-radius:8px;
+}
+button{
+    padding:10px 14px;
+    font-size:16px;
+    font-weight:bold;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+.copy{
+    background:#22c55e;
+    color:#fff;
+}
+.add{
+    background:#2563eb;
+    color:#fff;
+}
+.del{
+    background:#e5e7eb;
+}
+</style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Copy nhanh (bấm ✅ là copy)</h2>
+
+    <div id="list">
+        <div class="row">
+            <input placeholder="Dán nội dung vào đây…">
+            <button class="copy" onclick="copyLine(this)">✅</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <button class="add" onclick="addLine()">➕ Thêm ô</button>
+        <button class="del" onclick="clearAll()">🧹 Xoá hết</button>
+    </div>
+</div>
+
+<script>
+function copyLine(btn){
+    const input = btn.previousElementSibling;
+    if(!input.value.trim()) return;
+    navigator.clipboard.writeText(input.value);
+    btn.textContent = "✔";
+    setTimeout(()=>btn.textContent="✅",800);
+}
+
+function addLine(){
+    const row = document.createElement("div");
+    row.className = "row";
+    row.innerHTML = `
+        <input placeholder="Dán nội dung vào đây…">
+        <button class="copy" onclick="copyLine(this)">✅</button>
+    `;
+    document.getElementById("list").appendChild(row);
+}
+
+function clearAll(){
+    document.getElementById("list").innerHTML = `
+        <div class="row">
+            <input placeholder="Dán nội dung vào đây…">
+            <button class="copy" onclick="copyLine(this)">✅</button>
+        </div>
+    `;
+}
+</script>
+
+</body>
+</html>
